@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Users</title>
+    <title>All Users</title>
 </head>
 <body>
 <h1>All Users</h1>
-<a th:href="@{/spring_crud/users/add}">Add User</a>
+<a th:href="@{/users/add}">Add User</a>
 <table border="1">
     <tr>
         <th>ID</th>
@@ -18,7 +18,7 @@
         <td th:text="${user.id}"></td>
         <td th:text="${user.firstName}"></td>
         <td th:text="${user.lastName}"></td>
-        <td th:text="${user.email}"></td>
+        <td th:text="${user.age}"></td>
         <td>
             <a th:href="@{/users/edit/{id}(id=${user.id})}">Edit</a>
             <a th:href="@{/users/delete/{id}(id=${user.id})}">Delete</a>

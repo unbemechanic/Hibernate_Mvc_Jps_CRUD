@@ -8,7 +8,11 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "redirect:/users"; // JSP or Thymeleaf view name
+        return "users"; // JSP or Thymeleaf view name
+    }
+    @GetMapping("/spring_crud") // optional specific mapping
+    public String springCrud() {
+        return "users";
     }
 }
 
