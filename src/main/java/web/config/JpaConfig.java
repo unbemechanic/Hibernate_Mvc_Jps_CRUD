@@ -15,6 +15,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 @Configuration
@@ -22,16 +25,27 @@ import java.util.Properties;
 @EnableJpaRepositories(basePackages = "web.repository")
 public class JpaConfig {
 
-    @Autowired
-    private Environment env;
+    private Properties loadProperties() {
+        Properties props = new Properties();
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties")) {
+            if (input == null) {
+                throw new RuntimeException("Unable to find config.properties");
+            }
+            props.load(input);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load config.properties", e);
+        }
+        return props;
+    }
 
     @Bean
     public DataSource dataSource() {
+        Properties props = loadProperties();
         DriverManagerDataSource ds = new DriverManagerDataSource();
         ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
         ds.setUrl("jdbc:mysql://127.0.0.1:3306/spring_schema?useSSL=false&serverTimezone=UTC");
         ds.setUsername("root");
-        ds.setPassword("slaveofgod99"); // change password
+        ds.setPassword(props.getProperty("db.password")); // change password
         return ds;
     }
 
